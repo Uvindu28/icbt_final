@@ -10,6 +10,7 @@ import Bookings from "../pages/Bookings";
 import FoodCategory from "../pages/FoodCategory";
 import Home from "../pages/Home";
 import SignUp from "../components/SignUp";
+import Reviews from "../pages/Reviews";
 
 const router = createBrowserRouter([
     {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
                     {
                         path: "foodCategories",
                         element: <FoodCategory/>
+                    },
+                    {
+                        path: "review",
+                        element: <Reviews/>
                     },
                     {
                         path: "booking",

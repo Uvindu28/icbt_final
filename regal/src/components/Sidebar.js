@@ -5,6 +5,7 @@ import { FaBowlFood } from "react-icons/fa6";
 import { FaBookmark } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
 import { FaCalendarDays } from "react-icons/fa6";
+import { MdOutlineRateReview } from "react-icons/md";
 import { Link, Outlet } from 'react-router-dom';
 
 function Sidebar() {
@@ -41,6 +42,10 @@ function Sidebar() {
             <Link to="foodCategories" className='flex items-center font-medium justify-start text-white  hover:bg-red p-3 rounded-md'>
               <BiSolidCategory className='mr-2 text-lg' />
               Food Category
+            </Link>
+            <Link to="review" className='flex items-center font-medium justify-start text-white  hover:bg-red p-3 rounded-md'>
+              <MdOutlineRateReview className='mr-2 text-lg' />
+              Reviews
             </Link>
             <Link to="booking" className='flex items-center font-medium justify-start text-white  hover:bg-red p-3 rounded-md'>
               <FaBookmark className='mr-2 text-lg' />

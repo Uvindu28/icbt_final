@@ -100,7 +100,7 @@ function Login() {
                   required
                 />
                 <div
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-2xl leading-5 cursor-pointer mt-6"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-2xl leading-5 cursor-pointer mt-20 mr-6"
                     onClick={togglePasswordVisibility}
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -123,6 +123,8 @@ function Login() {
         </div>
       </div>
     </section>
+  
+
   );
 }
 

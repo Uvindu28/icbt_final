@@ -6,11 +6,11 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from './Header';
 
-function SeatBooking({ seatNumber, isSelected, onClick }) {
+function SeatBooking({ seatNumber, isSelected, isBooked, onClick }) {
   return (
     <MdOutlineChair
-      className={`text-3xl -rotate-90 cursor-pointer relative bottom-16 transition-transform duration-300 ease-in-out hover:scale-110 
-      ${isSelected ? 'text-indigo-600' : 'text-gray-700  hover:text-indigo-500'}`}
+      className={`text-3xl -rotate-90 cursor-pointer relative bottom-16 transition-transform duration-300 ease-in-out 
+      ${isSelected ? 'text-indigo-600' : isBooked ? 'text-red-600' : 'text-gray-700 hover:text-indigo-500'}`}
       onClick={onClick}
     />
   );
@@ -19,24 +19,37 @@ function SeatBooking({ seatNumber, isSelected, onClick }) {
 const MovieSeatLayout = () => {
   const totalSeat = 80;
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [bookedSeats, setBookedSeats] = useState([]); // Add a state to store booked seats
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const location = useLocation();
   const { selectedMovieDate } = location.state || {};
+
   
   const totalPrice = selectedSeats.length * (movie ? movie.moviePrice : 0); // Correct total price calculation
   
   useEffect(() => {
-    const fetchMovie = async () => {
+    const fetchBookedSeats = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/auth/d${id}`);
-        setMovie(response.data);
+        const response = await axios.get(`http://localhost:8080/auth/i${id}`);
+        const bookedSeats = response.data.seatNumbers.map((seat) => seat.sn);
+        setBookedSeats(bookedSeats);
       } catch (error) {
-        console.error('Error fetching movie details:', error);
+        console.error('Error fetching booked seats:', error);
       }
     };
-    fetchMovie();
+    fetchBookedSeats();
   }, [id]);
+
+  useEffect(() => { const fetchMovie = async () => { 
+    try { 
+      const response = await axios.get(`http://localhost:8080/auth/d${id}`); 
+          setMovie(response.data); 
+        } catch (error) { 
+          console.error('Error fetching movie details:', error); 
+        } }; 
+        fetchMovie(); 
+        }, [id]);
 
   const navigate = useNavigate();
   const handelViewDetails = () => {
@@ -64,11 +77,13 @@ const MovieSeatLayout = () => {
   const renderSeats = () => {
     let seats = [];
     for (let i = 1; i <= totalSeat; i++) {
+      const isBooked = bookedSeats.includes(i.toString()); // Check if the seat is booked
       seats.push(
         <SeatBooking
           key={i}
           seatNumber={i}
           isSelected={selectedSeats.includes(i)}
+          isBooked={isBooked} // Pass the booked status to the SeatBooking component
           onClick={() => handleSeatClick(i)}
         />
       );
@@ -76,7 +91,12 @@ const MovieSeatLayout = () => {
     return seats;
   };
 
+
   if (!movie) {
+    return <div>Loading...</div>;
+  }
+
+  if (!selectedSeats) {
     return <div>Loading...</div>;
   }
 

@@ -25,7 +25,7 @@ public class BookingController {
         return bookingService.getAllBookings();
     }
 
-    @GetMapping("/auth/booking/{id}") //Dynamic routing path
+    @GetMapping("/auth/i{id}") //Dynamic routing path
     public Booking getBookingById(@PathVariable Long booking_id) {
         return bookingService.getBookingById(booking_id);
     }
